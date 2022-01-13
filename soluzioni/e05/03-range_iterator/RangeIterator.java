@@ -24,19 +24,15 @@ import java.util.NoSuchElementException;
 
 public class RangeIterator implements Iterable<Integer> {
 
+  private final int from;
   private final int to;
   private final int step;
-  private int next;
-  private boolean hasNext;
 
   RangeIterator(int from, int to, int step) {
     if (step == 0) throw new IllegalArgumentException("Step must be not 0");
-
+    this.from = from;
     this.to = to;
     this.step = step;
-
-    next = from;
-    hasNext = step > 0 ? next < to : next > to;
   }
 
   RangeIterator(int to, int step) {
@@ -50,6 +46,9 @@ public class RangeIterator implements Iterable<Integer> {
   @Override
   public Iterator<Integer> iterator() {
     return new Iterator<Integer>() {
+      private int next = from;
+      private boolean hasNext = step > 0 ? next < to : next > to;
+
       @Override
       public Integer next() {
         if (!hasNext()) throw new NoSuchElementException();
